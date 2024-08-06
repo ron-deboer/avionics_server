@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Avionics</title>
+	<style>
+		*, html {
+			box-sizing: border-box;
+			padding: 0;
+			margin: 0;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		}
+		body {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			margin: 0;
+			font-family: sans-serif;
+			background-color: #444;
+			color: #fff;			
+		}
+		.container {
+			/* min-width: 75vw;
+			max-width: 75vw; */
+			padding-top: 2rem;
+			margin: 0 auto;
+			display: flex;
+			flex-direction: column;
+			gap: 2rem;
+			align-items: center;
+			justify-content: center;
+		}
+		.card {
+			min-width: 30rem;
+			max-width: 30rem;
+			border: 0px solid #888;
+			height: auto;
+			text-align: center;
+			font-size: 2rem;
+			border-radius: 10px;
+			background-color: indigo;
+			color: #fff;
+		}
+		.purple {
+			background-color: purple;			
+		}
+		#canvas {
+			display: block;
+			background: #ccc;
+			font-family: sans-serif;
+			color: #fff;				
+		}		
+	</style>
+</head>
+<body>
+	<div>
+		<canvas id="canvas" width="0" height="0"></canvas>		
+	</div>
+	<div class="container">	
+		<div class="card">
+			GROUNDSPEED KTS
+			<h1 id="gs">88</h1>
+		</div>
+		<div class="card">
+			ALTITUDE
+			<h1 id="alt">1500</h1>
+		</div>	
+		<div class="card purple">
+			QNH
+			<h1 id="qnh">1022</h1>
+		</div>	
+ 		<div class="card">
+			HEADING
+			<h1 id="hdg">000</h1>
+		</div>		
+	</div>
+    <script src="compass1.js"></script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			new Compass(500);			
+			setInterval(async() => {
+				const resp = await fetch('http://192.168.0.101/heading');
+				const data = await resp.json();
+				// console.log(data);
+				document.getElementById("hdg").innerHTML = data.heading;
+				_heading = data.heading;
+			}, 1000);
+		});		
+	</script>
+</body>
+</html>
